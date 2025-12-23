@@ -31,6 +31,8 @@ public class Post extends BaseIdAndTime {
     public PostComment addComment(Member author, String content) {
         PostComment postComment = new PostComment(this, author, content);
         comments.add(postComment);
+        //활동점수 추가(댓글)
+        author.increaseActivityScore(1);
         return postComment;
     }
     public boolean hasComments(){

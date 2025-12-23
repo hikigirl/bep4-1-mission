@@ -20,6 +20,9 @@ public class PostService {
     public Post write(Member author, String title, String content) {
         Post post = new Post(author, title, content);
 
+        //게시글 썼을때 3점 추가
+        author.increaseActivityScore(3);
+
         return postRepository.save(post);
     }
 
