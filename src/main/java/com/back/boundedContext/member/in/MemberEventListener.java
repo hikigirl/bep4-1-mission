@@ -1,5 +1,6 @@
 package com.back.boundedContext.member.in;
 
+import com.back.boundedContext.member.app.MemberFacade;
 import com.back.boundedContext.member.domain.Member;
 import com.back.boundedContext.member.app.MemberService;
 import com.back.shared.post.event.PostCommentCreatedEvent;
@@ -15,12 +16,14 @@ import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMI
 @Component
 @RequiredArgsConstructor
 public class MemberEventListener {
-    private final MemberService memberService;
+    //private final MemberService memberService;
+    //service를 직접 호출하지 않고 facade를 통해 호출하도록 함
+    private final MemberFacade memberFacade;
 
     @TransactionalEventListener(phase = AFTER_COMMIT)
     @Transactional(propagation = REQUIRES_NEW)
     public void handle(PostCreatedEvent event) {
-        Member member = memberService.findById(event.getPost().getAuthorId()).get();
+        Member member = memberFacade.findById(event.getPost().getAuthorId()).get();
 
         member.increaseActivityScore(3);
     }
@@ -28,7 +31,7 @@ public class MemberEventListener {
     @TransactionalEventListener(phase = AFTER_COMMIT)
     @Transactional(propagation = REQUIRES_NEW)
     public void handle(PostCommentCreatedEvent event) {
-        Member member = memberService.findById(event.getPostComment().getAuthorId()).get();
+        Member member = memberFacade.findById(event.getPostComment().getAuthorId()).get();
 
         member.increaseActivityScore(1);
     }
