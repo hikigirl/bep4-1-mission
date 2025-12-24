@@ -9,30 +9,17 @@ import com.back.shared.post.event.PostCreatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
-public class PostService {
-    private final PostRepository postRepository; //주입
+public class PostWriteUseCase {
+    private final PostRepository postRepository;
     private final EventPublisher eventPublisher;
-
-    public long count() {
-        return postRepository.count();
-    }
 
     public Post write(Member author, String title, String content) {
         Post post = postRepository.save(new Post(author, title, content));
 
         eventPublisher.publish(new PostCreatedEvent(new PostDto(post)));
 
-        //게시글 썼을때 3점 추가(결합도 발생)
-        // author.increaseActivityScore(3);
-
         return post;
-    }
-
-    public Optional<Post> findById(int id) {
-        return postRepository.findById(id);
     }
 }
