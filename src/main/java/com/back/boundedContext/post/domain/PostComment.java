@@ -10,15 +10,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "POST_POST_COMMENT")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class PostComment extends BaseIdAndTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member author;
+    private PostMember author;
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    public PostComment(Post post, PostMember author, String content) {
+        this.post = post;
+        this.author = author;
+        this.content = content;
+    }
 }
