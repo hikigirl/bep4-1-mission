@@ -2,7 +2,9 @@ package com.back.boundedContext.cash.app;
 
 import com.back.boundedContext.cash.domain.CashMember;
 import com.back.boundedContext.cash.domain.Wallet;
+import com.back.boundedContext.cash.out.CashMemberRepository;
 import com.back.boundedContext.cash.out.WalletRepository;
+import com.back.shared.cash.dto.CashMemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CashCreateWalletUseCase {
     private final WalletRepository walletRepository;
-    public Wallet createWallet(CashMember member) {
+    private final CashMemberRepository cashMemberRepository;
+
+    public Wallet createWallet(CashMemberDto memberDto) {
+        CashMember member = cashMemberRepository.getReferenceById(memberDto.getId());
         Wallet wallet = new Wallet(member);
         return walletRepository.save(wallet);
     }
