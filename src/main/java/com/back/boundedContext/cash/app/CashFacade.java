@@ -14,38 +14,29 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CashFacade {
-    //Facade는 usecase를 호출하는 역할..
-    private final CashMemberRepository cashMemberRepository;
-    private final WalletRepository walletRepository;
+    //Facade는 usecase를 호출하는 역할..(usecase와 facade를 분리하였음)
+    private final CashSupport cashSupport;
+    private final CashSyncMemberUseCase cashSyncMemberUseCase;
+    private final CashCreateWalletUseCase cashCreateWalletUseCase;
 
     @Transactional
     public CashMember syncMember(MemberDto memberDto) {
-        CashMember member = new CashMember(
-                memberDto.getId(),
-                memberDto.getCreateDate(),
-                memberDto.getModifyDate(),
-                memberDto.getUsername(),
-                "",
-                memberDto.getNickname(),
-                memberDto.getActivityScore()
-        );
-        return cashMemberRepository.save(member);
+        return cashSyncMemberUseCase.syncMember(memberDto);
     }
 
     @Transactional
     public Wallet createWallet(CashMember holder) {
-        Wallet wallet = new Wallet(holder);
-        return walletRepository.save(wallet);
+        return cashCreateWalletUseCase.createWallet(holder);
     }
 
     @Transactional(readOnly = true)
     public Optional<CashMember> findMemberByUsername(String username) {
-        return cashMemberRepository.findByUsername(username);
+        return cashSupport.findMemberByUsername(username);
     }
 
     @Transactional(readOnly = true)
     public Optional<Wallet> findWalletByHolder(CashMember holder) {
-        return walletRepository.findByHolder(holder);
+        return cashSupport.findWalletByHolder(holder);
     }
 
 }
