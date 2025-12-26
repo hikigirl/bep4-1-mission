@@ -16,6 +16,7 @@ public class MemberPolicy {
     public int getNeedToChangePasswordDays() {
         return PASSWORD_CHANGE_DAYS;
     }
+
     public boolean isNeedToChangePassword(LocalDateTime lastChangedAt) {
         if (lastChangedAt == null) return true;
         return lastChangedAt.plusDays(PASSWORD_CHANGE_DAYS).isBefore(LocalDateTime.now());

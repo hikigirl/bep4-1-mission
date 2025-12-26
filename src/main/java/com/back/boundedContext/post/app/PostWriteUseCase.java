@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 public class PostWriteUseCase {
     private final PostRepository postRepository;
     private final EventPublisher eventPublisher;
-    //결합도를 제거
-    //private final MemberFacade memberFacade;
     private final MemberApiClient memberApiClient;
 
 
@@ -26,7 +24,9 @@ public class PostWriteUseCase {
         Post post = postRepository.save(new Post(author, title, content));
 
         eventPublisher.publish(new PostCreatedEvent(new PostDto(post)));
+
         String randomSecureTip = memberApiClient.getRandomSecureTip();
+
         return new RsData<>("201-1",
                 "%d번 글이 생성되었습니다. 보안 팁: %s"
                         .formatted(post.getId(), randomSecureTip),
