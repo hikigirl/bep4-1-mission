@@ -38,11 +38,18 @@ public class PostFacade {
     }
 
     public PostMember syncMember(MemberDto memberDto) {
-        PostMember postMember = new PostMember(memberDto.getUsername(), "", memberDto.getNickname());
+        PostMember postMember = new PostMember(
+                memberDto.getId(),
+                memberDto.getCreateDate(),
+                memberDto.getModifyDate(),
+                memberDto.getUsername(),
+                "",
+                memberDto.getNickname()
+        );
 
-        postMember.setId(memberDto.getId());
-        postMember.setCreateDate(memberDto.getCreateDate());
-        postMember.setModifyDate(memberDto.getModifyDate());
+//        postMember.setId(memberDto.getId());
+//        postMember.setCreateDate(memberDto.getCreateDate());
+//        postMember.setModifyDate(memberDto.getModifyDate());
 
         return postMemberRepository.save(postMember);
     }
