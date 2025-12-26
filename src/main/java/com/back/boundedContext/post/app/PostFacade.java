@@ -44,7 +44,8 @@ public class PostFacade {
                 memberDto.getModifyDate(),
                 memberDto.getUsername(),
                 "",
-                memberDto.getNickname()
+                memberDto.getNickname(),
+                memberDto.getActivityScore()
         );
 
 //        postMember.setId(memberDto.getId());
