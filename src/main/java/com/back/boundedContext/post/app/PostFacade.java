@@ -18,13 +18,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostFacade {
-    private final PostRepository postRepository;
-    private final PostMemberRepository postMemberRepository;
+    private final PostSupport postSupport;
+    private final PostSyncMemberUseCase postSyncMemberUseCase;
     private final PostWriteUseCase postWriteUseCase;
 
     @Transactional(readOnly = true)
     public long count() {
-        return postRepository.count();
+        return postSupport.count();
     }
 
     @Transactional
@@ -34,29 +34,16 @@ public class PostFacade {
 
     @Transactional(readOnly = true)
     public Optional<Post> findById(int id) {
-        return postRepository.findById(id);
+        return postSupport.findById(id);
     }
 
     @Transactional
     public PostMember syncMember(MemberDto memberDto) {
-        PostMember postMember = new PostMember(
-                memberDto.getId(),
-                memberDto.getCreateDate(),
-                memberDto.getModifyDate(),
-                memberDto.getUsername(),
-                "",
-                memberDto.getNickname(),
-                memberDto.getActivityScore()
-        );
 
-//        postMember.setId(memberDto.getId());
-//        postMember.setCreateDate(memberDto.getCreateDate());
-//        postMember.setModifyDate(memberDto.getModifyDate());
-
-        return postMemberRepository.save(postMember);
+        return postSyncMemberUseCase.syncMember(memberDto);
     }
-    @Transactional(readOnly = true)
-    public Optional<PostMember> findPostMemberByUserName(String username) {
-        return postMemberRepository.findByUsername(username);
+
+    public Optional<PostMember> findMemberByUserName(String username) {
+        return postSupport.findMemberByUsername(username);
     }
 }
