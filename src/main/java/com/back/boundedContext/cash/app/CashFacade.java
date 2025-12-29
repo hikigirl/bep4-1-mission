@@ -47,4 +47,8 @@ public class CashFacade {
         cashCompleteOrderPaymentUseCase.handle(event);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<Wallet> findWalletByHolderId(int holderId) {
+        return cashSupport.findWalletByHolderId(holderId);
+    }
 }
