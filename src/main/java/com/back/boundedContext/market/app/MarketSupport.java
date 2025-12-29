@@ -7,11 +7,12 @@ import com.back.boundedContext.market.out.CartRepository;
 import com.back.boundedContext.market.out.MarketMemberRepository;
 import com.back.boundedContext.market.out.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class MarketSupport {
     private final ProductRepository productRepository;
