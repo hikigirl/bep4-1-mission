@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,9 +23,9 @@ public class PostFacade {
     private final PostSyncMemberUseCase postSyncMemberUseCase;
     private final PostWriteUseCase postWriteUseCase;
 
-    @Transactional(readOnly = true)
-    public long count() {
-        return postSupport.count();
+    @Transactional
+    public PostMember syncMember(MemberDto memberDto) {
+        return postSyncMemberUseCase.syncMember(memberDto);
     }
 
     @Transactional
@@ -33,17 +34,22 @@ public class PostFacade {
     }
 
     @Transactional(readOnly = true)
+    public long count() {
+        return postSupport.count();
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Post> findById(int id) {
         return postSupport.findById(id);
     }
 
-    @Transactional
-    public PostMember syncMember(MemberDto memberDto) {
-
-        return postSyncMemberUseCase.syncMember(memberDto);
-    }
-
+    @Transactional(readOnly = true)
     public Optional<PostMember> findMemberByUserName(String username) {
         return postSupport.findMemberByUsername(username);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findByOrderByIdDesc() {
+        return postSupport.findByOrderByIdDesc();
     }
 }
