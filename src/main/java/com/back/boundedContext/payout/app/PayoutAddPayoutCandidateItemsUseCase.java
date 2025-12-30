@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PayoutAddPayoutCandidateItemsUseCase {
@@ -23,14 +22,14 @@ public class PayoutAddPayoutCandidateItemsUseCase {
     private final PayoutCandidateItemRepository payoutCandidateItemRepository;
 
     public void addPayoutCandidateItems(OrderDto order) {
-        //log.debug("addPayoutCandidateItems.order: {}", order.getId());
+
         marketApiClient.getOrderItems(order.getId()).forEach(orderItem -> makePayoutCandidateItems(order, orderItem));
     }
     private void makePayoutCandidateItems(
             OrderDto order,
             OrderItemDto orderItem
     ) {
-        PayoutMember holding = payoutSupport.findHolingMember().get();
+        PayoutMember system = payoutSupport.findSystemMember().get();
         PayoutMember buyer = payoutSupport.findMemberById(orderItem.getBuyerId()).get();
         PayoutMember seller = payoutSupport.findMemberById(orderItem.getSellerId()).get();
 
@@ -40,7 +39,7 @@ public class PayoutAddPayoutCandidateItemsUseCase {
                 orderItem.getId(),
                 order.getPaymentDate(),
                 buyer,
-                holding,
+                system,
                 orderItem.getPayoutFee()
         );
 
