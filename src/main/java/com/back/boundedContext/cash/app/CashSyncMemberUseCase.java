@@ -18,7 +18,7 @@ public class CashSyncMemberUseCase {
 
     public CashMember syncMember(MemberDto memberDto) {
         boolean isNew = !cashMemberRepository.existsById(memberDto.getId());
-        CashMember cashMember =cashMemberRepository.save(
+        CashMember cashMember = cashMemberRepository.save(
                 new CashMember(
                         memberDto.getId(),
                         memberDto.getCreateDate(),
@@ -30,7 +30,7 @@ public class CashSyncMemberUseCase {
                 )
         );
         if(isNew) {
-            eventPublisher.publish(new CashMemberCreatedEvent(new CashMemberDto(cashMember)));
+            eventPublisher.publish(new CashMemberCreatedEvent(cashMember.toDto()));
         }
         return cashMember;
     }
