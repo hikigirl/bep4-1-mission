@@ -52,6 +52,10 @@ public class PayoutCollectPayoutItemsMoreUseCase {
 
     }
 
+    private Optional<Payout> findActiveByPayee(PayoutMember payee) {
+        return payoutRepository.findByPayeeAndPayoutDateIsNull(payee);
+    }
+
     //헬퍼메서드 2개
     private List<PayoutCandidateItem> findPayoutReadyCandidateItems(int limit) {
         LocalDateTime daysAgo = LocalDateTime
@@ -64,9 +68,5 @@ public class PayoutCollectPayoutItemsMoreUseCase {
                 daysAgo,
                 PageRequest.of(0, limit)
         );
-    }
-
-    private Optional<Payout> findActiveByPayee(PayoutMember payee) {
-        return payoutRepository.findByPayeeAndPayoutDateIsNull(payee);
     }
 }
