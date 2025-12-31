@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-//@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PayoutCreatePayoutUseCase {
@@ -18,9 +17,8 @@ public class PayoutCreatePayoutUseCase {
     private final PayoutRepository payoutRepository;
     private final PayoutMemberRepository payoutMemberRepository;
 
-    public Payout createPayout(PayoutMemberDto payee) {
-        //log.debug("createPayout.payee: {}", payee.getId());
-        PayoutMember _payee = payoutMemberRepository.getReferenceById(payee.getId());
+    public Payout createPayout(int payeeId) {
+        PayoutMember _payee = payoutMemberRepository.getReferenceById(payeeId);
         Payout payout = payoutRepository.save(new Payout(_payee));
 
         return payout;
